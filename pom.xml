@@ -1,0 +1,113 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.russo.fulvio.bravofly</groupId>
+  <artifactId>salesTaxes</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>salesTaxes</name>
+  <description>Sales taxes calculator application</description>
+  
+   <properties>
+	 <junit.version>4.8.1</junit.version>
+	 <apache.common.config.version>2.1.1</apache.common.config.version>
+	 <apache.log4j.version>2.6.1</apache.log4j.version>
+	 <apache.common.beanutils>1.9.3</apache.common.beanutils>
+	 <jdk.version>1.7</jdk.version>	 
+	 <maven.assemply.plugin.version>2.4.1</maven.assemply.plugin.version>
+	 <maven.compiler.plugin.version>3.6.1</maven.compiler.plugin.version>
+   </properties>
+  
+  <dependencies>
+
+	     <dependency>
+	        <groupId>junit</groupId>
+	        <artifactId>junit</artifactId>
+	        <version>${junit.version}</version>
+	        <scope>test</scope>
+	     </dependency>	     
+	     
+	     <dependency>
+		   <groupId>org.apache.commons</groupId>
+		   <artifactId>commons-configuration2</artifactId>
+		   <version>${apache.common.config.version}</version>
+		 </dependency>
+		 
+		 <!--  LOGGING  -->
+		 <dependency>
+		   <groupId>org.apache.logging.log4j</groupId>
+		   <artifactId>log4j-api</artifactId>
+		   <version>${apache.log4j.version}</version>
+		 </dependency>
+	
+		 <dependency>
+		   <groupId>org.apache.logging.log4j</groupId>
+		   <artifactId>log4j-core</artifactId>
+		   <version>${apache.log4j.version}</version>
+		 </dependency>
+		 
+		 <dependency>
+		    <groupId>commons-beanutils</groupId>
+		    <artifactId>commons-beanutils</artifactId>
+		    <version>${apache.common.beanutils}</version>
+		 </dependency>	 
+	
+	</dependencies>  
+	
+	<build>
+    	<finalName>salesTaxes</finalName>
+        
+        <resources>
+            <resource>
+               <directory>src/main/resources</directory>
+               <filtering>false</filtering>        
+            </resource>             
+        </resources>
+    
+       <pluginManagement>
+    
+          <plugins>  
+              
+	           <plugin>
+	                <artifactId>maven-compiler-plugin</artifactId>
+	                <version>${maven.compiler.plugin.version}</version>
+	                <configuration>
+	                    <source>${jdk.version}</source>
+	                    <target>${jdk.version}</target>
+	                </configuration>
+	           </plugin>            
+           
+	          <!-- Maven Assembly Plugin -->
+			  <plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-assembly-plugin</artifactId>
+					<version>${maven.assemply.plugin.version}</version>
+					<configuration>					
+						<descriptorRefs>
+							<descriptorRef>executable-jar</descriptorRef>
+						</descriptorRefs>
+						<!-- MainClass of the executable jar -->
+						<archive>
+						  <manifest>
+							<mainClass>com.russo.fulvio.bravofly.salestaxes.SalesTaxesMain</mainClass>
+						  </manifest>
+						</archive>
+					</configuration>
+					<executions>
+					  <execution>
+						<id>make-assembly</id>
+	                    <!-- mvn clean package:single to create runnable jar -->
+						<phase>package</phase> 
+						<goals>
+							<goal>single</goal>
+						</goals>
+					  </execution>
+					</executions>
+				</plugin>           
+              
+  		   </plugins>
+  		
+       </pluginManagement>
+  
+  
+  </build>
+  
+</project>
