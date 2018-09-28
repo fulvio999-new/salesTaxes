@@ -3,10 +3,10 @@ package com.russo.fulvio.bravofly.salestaxes;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,30 +30,30 @@ public class SalesTaxesMain {
 		  AppConfigurationReader APPLICATION_CONFIG_READER = AppConfigurationReader.getInstance();
 		
 		  /* store the purchased Goods */
-		  ArrayList<PurchasedGood> purchasedGoodsList = new ArrayList<PurchasedGood>();		  
+		  ArrayList<PurchasedGood> purchasedGoodsList = new ArrayList<PurchasedGood>();
+		  
+		  /* utility to calculate taxes on goods */
 		  TaxCalculator taxCalculator = new TaxCalculator();
+		  
+		  BufferedReader br = new BufferedReader(new InputStreamReader(System.in));	
 		  
 		  int choice = -1;
 		  
 		  printMenu();
 		    	      
-		  while(choice !=0) {	    		  
-	    	 
-	    	 BufferedReader br = new BufferedReader(new InputStreamReader(System.in));	         
-	    
+		  while(choice !=0) {			  
+			 
+			 System.out.print("Enter your choice number:");
 	    	 choice = Integer.parseInt(br.readLine().trim().toLowerCase());
 	    	 
 	         switch (choice) {
 	             case 1:
 	            	 try {
-		            	 System.out.print("Puchased Good > ");
+		            	 System.out.print("Good name > ");
 		    	         String purchasedGood = br.readLine().trim().toLowerCase();
 		    	         
-		    	         System.out.print("Good category > ");
+		    	         System.out.print("Good category (book, food, medical, other) > ");
 		    	         String goodCategory = br.readLine().trim().toLowerCase();
-		    	         
-		    	         //if(! StringUtils.containsIgnoreCase(APPLICATION_CONFIG_READER.getBasicSalesTaxExcludedGoods(), goodCategory))
-		    	        //	 System.out.print("Good category > ");
 		    	         
 		    	         System.out.print("Good price > ");   	         
 	    	             double goodNetPrice = Double.parseDouble(br.readLine().trim().toLowerCase());   	             
@@ -61,34 +61,32 @@ public class SalesTaxesMain {
 	    	             double importDutyTax = 0.0;
 	    	             double basicSalesTax = 0.0; 
 	    	             
-	    	             /* check if apply imported duty tax */
+	    	             /* apply 'imported duty tax' if product is an imported one */
 	    	             if(StringUtils.containsIgnoreCase(purchasedGood, "imported")) {
-	    	            	System.out.println("imported product, apply duty tax");
+	    	            	//System.out.println("Imported product, apply duty tax");
 	    	            	importDutyTax = taxCalculator.getImportDutyTax(goodNetPrice); 
 	    	             }
 	    	            
-	    	             /* check if apply Basic sales tax depending on the good category  */
+	    	             /* if good category is NOT in the category whitelist apply basic sales tax   */
 	    	             if(! StringUtils.containsIgnoreCase(APPLICATION_CONFIG_READER.getBasicSalesTaxExcludedGoods(), goodCategory)) {
-	    	            	 System.out.println("Good category not in exclusion list: apply Basic salex tax");
+	    	            	 //System.out.println("Good category not in exclusion list: apply Basic sales tax");
 	    	                 basicSalesTax = taxCalculator.getBasicSalesTax(goodNetPrice);
 	            	     }  	             
-	            	
-	    	             //System.out.println("Basic Tax:"+basicSalesTax);
-	    	             //System.out.println("Duty Tax:"+importDutyTax);
 	    	             
 	    	             double totalAmountTax = importDutyTax + basicSalesTax;	    
 	    	             double priceWithTaxes = goodNetPrice + totalAmountTax;	  	
 	    	             
-	    	             PurchasedGood good = new PurchasedGood(purchasedGood, goodNetPrice, totalAmountTax, NumberFormatterUtils.formaDouble(2,priceWithTaxes));
+	    	             PurchasedGood good = new PurchasedGood(purchasedGood, goodNetPrice, totalAmountTax, NumberFormatterUtils.formatDouble(2,priceWithTaxes));
 	    			     purchasedGoodsList.add(good);
 	    	             
 	    	         }catch (NumberFormatException e) {	
+	    	        	LOGGER.fatal("Error formatitng good price, cause ",e);
 	    	        	System.out.print("Error, Good price is a number, insert again Good price > ");	    	           
 	 			     } 
 	    	         
 	                 break;
 	             case 2:	            	
-	            	 printPurchaseList(purchasedGoodsList);
+	            	 printReceipt(purchasedGoodsList);
 	            	 purchasedGoodsList.clear(); 
 	                 break;
 	             case 3:
@@ -96,38 +94,49 @@ public class SalesTaxesMain {
 	                 break;    
 	             default:
 	            	 System.out.print("Invalid value");
-	         }       
+	            	 printMenu();
+	          }       
 	      } 
 	      
-	      System.out.println("BYE !!");
+	      System.out.println("BYE !");
 	}   
 	
-	
-	private static void printPurchaseList(List<PurchasedGood> purchasedGoodsList) {
+	/**
+	 * Print the Receipt for the current purchase list if shopping list is not empty
+	 * @param purchasedGoodsList the purchase list to print
+	 */
+	private static void printReceipt(List<PurchasedGood> purchasedGoodsList) {
 		
-		double salesTaxesTotal = 0.0;
-		double purchaseTotal = 0.0;
+		if(CollectionUtils.isEmpty(purchasedGoodsList)) {
+			System.out.println("Shopping list is empty can't print receipt !");
+		}else {
+		
+			double salesTaxesTotal = 0.0;
+			double purchaseTotal = 0.0;
+					
+			for(PurchasedGood good: purchasedGoodsList) {
+				System.out.println(good.getGoodType()+": "+good.getPriceWithTaxes());
 				
-		for(PurchasedGood good: purchasedGoodsList) {
-			System.out.println(good.getGoodType()+": "+good.getPriceWithTaxes());
+				purchaseTotal += good.getPriceWithTaxes();
+				salesTaxesTotal += good.getGoodTotalTax();
+			}		
 			
-			purchaseTotal += good.getPriceWithTaxes();
-			salesTaxesTotal += good.getGoodTotalTax();
-		}		
-		
-		System.out.println("Sales Taxes:"+NumberFormatterUtils.formaDouble(2, salesTaxesTotal));
-		System.out.println("Total: "+NumberFormatterUtils.formaDouble(2, purchaseTotal));
+			System.out.println("Sales Taxes: "+NumberFormatterUtils.formatDouble(2, salesTaxesTotal));
+			System.out.println("Total: "+NumberFormatterUtils.formatDouble(2, purchaseTotal));
+		}
 	}	
 	
-	
+	/**
+	 * Utility to print allowed user choices
+	 */
 	private static void printMenu() {	
 		
-		 System.out.println("-------Menu-----\n");
-	   	 System.out.println("0 Exit and clean\n");
-	   	 System.out.println("1 Purchase Good\n");
-	   	 System.out.println("2 Print receipt\n");
-	   	 System.out.println("3 Print menu\n"); 
-	   	 System.out.println("---------------\n"); 
+		 System.out.print("-------Menu choices-----\n");
+	   	 System.out.print("0 : Exit and clean\n");
+	   	 System.out.print("1 : Purchase Good\n");
+	   	 System.out.print("2 : Print receipt\n");
+	   	 System.out.print("3 : Print menu\n"); 
+	   	 System.out.print("-------------------------\n"); 
 	}
 
 }

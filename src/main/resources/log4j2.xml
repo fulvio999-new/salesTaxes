@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="fatal" monitorInterval="240">
-    <Appenders>       
-        <Console name="console" target="SYSTEM_OUT">
-            <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss} [%t] %c{1} - %msg%n" />
-        </Console>
+
+     <Appenders>
+        <RollingFile name="fileLogger" fileName="salesTaxes.log" filePattern="salesTaxes.log">
+            <PatternLayout>
+                <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss} [%t] %c{1} - %msg%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true" />
+            </Policies>
+        </RollingFile>
+ 
+        
     </Appenders>
+    
     <Loggers>
         <Logger name="com.russo.fulvio" level="fatal" additivity="true">
-            <appender-ref ref="console" level="fatal" />
+            <appender-ref ref="fileLogger" level="fatal" />
         </Logger>           
         <Root level="debug" additivity="false">
             <appender-ref ref="console" />

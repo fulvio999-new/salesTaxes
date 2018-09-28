@@ -17,10 +17,10 @@ public class NumberFormatterUtils {
 	 * @param valueToFormat the number to format
 	 * @return a double value formatted with the provide scale
 	 */
-	public static double formaDouble(int scale, double valueToFormat) {
+	public static double formatDouble(int scale, double valueToFormat) {
 		
 		BigDecimal bd = BigDecimal.valueOf(valueToFormat);     	
-	 	bd = bd.setScale(scale, BigDecimal.ROUND_HALF_EVEN);
+	 	bd = bd.setScale(scale, BigDecimal.ROUND_UP);	
 	 	
 	 	return bd.doubleValue();		
 	}

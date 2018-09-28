@@ -77,31 +77,32 @@
            
 	          <!-- Maven Assembly Plugin -->
 			  <plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-assembly-plugin</artifactId>
-					<version>${maven.assemply.plugin.version}</version>
-					<configuration>					
-						<descriptorRefs>
-							<descriptorRef>executable-jar</descriptorRef>
-						</descriptorRefs>
-						<!-- MainClass of the executable jar -->
-						<archive>
-						  <manifest>
-							<mainClass>com.russo.fulvio.bravofly.salestaxes.SalesTaxesMain</mainClass>
-						  </manifest>
-						</archive>
-					</configuration>
-					<executions>
-					  <execution>
-						<id>make-assembly</id>
-	                    <!-- mvn clean package:single to create runnable jar -->
-						<phase>package</phase> 
-						<goals>
-							<goal>single</goal>
-						</goals>
-					  </execution>
-					</executions>
-				</plugin>           
+		    	<artifactId>maven-assembly-plugin</artifactId>
+		    	<configuration>
+			        <archive>
+			            <manifest>
+			                <mainClass>com.russo.fulvio.bravofly.salestaxes.SalesTaxesMain</mainClass>
+			            </manifest>
+			        </archive>
+			        <descriptorRefs>
+			            <descriptorRef>jar-with-dependencies</descriptorRef>
+			        </descriptorRefs>
+			        <finalName>salesTaxes-${project.version}-bin</finalName>
+			        
+			        <!-- to don't append the suffix 'jar-with-dependencies' -->
+                    <appendAssemblyId>false</appendAssemblyId> 			        
+		    	</configuration>
+		    	
+		    	<executions>
+		          <execution>
+		            <id>make-assembly</id> <!-- this is used for inheritance merges -->
+		            <phase>package</phase> <!-- bind the execution of the plugin to the packaging phase -->
+		            <goals>
+		              <goal>single</goal>
+		            </goals>
+		          </execution>
+		        </executions>		    	
+			</plugin>            
               
   		   </plugins>
   		
