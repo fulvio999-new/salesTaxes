@@ -12,6 +12,7 @@ mvn clean package
 To crete a standalone jar (ie with also the dependency) run:
 mvn assembly:assembly
 
+Travis link: https://travis-ci.org/fulvio999/salesTaxes
 
 * How to run *
 a) From your IDE run SalesTaxesMain.java class
