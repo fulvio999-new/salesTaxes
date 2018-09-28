@@ -1,11 +1,13 @@
 # salesTaxes
 Sales Taxes application
 
-* How to configure *
+* How to configure
+
 the configuration parameters are in appConfiguration.properties file 
 
 
-* How to build *
+* How to build
+
 To get a jar with only source code run:
 mvn clean package
 
@@ -14,7 +16,8 @@ mvn assembly:assembly
 
 Travis link: https://travis-ci.org/fulvio999/salesTaxes
 
-* How to run *
+* How to run
+
 a) From your IDE run SalesTaxesMain.java class
 
 b) As standalone jar
