@@ -39,9 +39,7 @@ public class TaxCalculatorTest {
 		
 		TaxCalculator taxCalculator = new TaxCalculator();
 		
-		double taxedValue = taxCalculator.getPriceWithBasicSalesTax(goodPrice);
-		//System.out.println("goodPrice: "+goodPrice);
-		//System.out.println("taxValue: "+taxValue);
+		double taxedValue = taxCalculator.getBasicSalesTax(goodPrice);	
 		
 		assertTrue(priceWithTax==taxedValue);	
 	}
@@ -52,9 +50,7 @@ public class TaxCalculatorTest {
 		
 		TaxCalculator taxCalculator = new TaxCalculator();
 		
-		double taxValue = taxCalculator.getPriceWithImportDutyTax(10.00);
-		//System.out.println("goodPrice: "+goodPrice);
-		//System.out.println("taxValue: "+taxValue);
+		double taxValue = taxCalculator.getBasicSalesTax(goodPrice);		
 		
 		assertTrue(10.50==taxValue);	
 	}

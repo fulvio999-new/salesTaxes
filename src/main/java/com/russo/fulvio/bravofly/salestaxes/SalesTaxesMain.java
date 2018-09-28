@@ -62,25 +62,25 @@ public class SalesTaxesMain {
 	    	             double basicSalesTax = 0.0; 
 	    	             
 	    	             /* apply 'imported duty tax' if product is an imported one */
-	    	             if(StringUtils.containsIgnoreCase(purchasedGood, "imported")) {
-	    	            	//System.out.println("Imported product, apply duty tax");
+	    	             if(StringUtils.containsIgnoreCase(purchasedGood, "imported")) {	    	            	
 	    	            	importDutyTax = taxCalculator.getImportDutyTax(goodNetPrice); 
+	    	            	//System.out.println("Imported product, apply duty tax of: "+importDutyTax);
 	    	             }
 	    	            
 	    	             /* if good category is NOT in the category whitelist apply basic sales tax   */
-	    	             if(! StringUtils.containsIgnoreCase(APPLICATION_CONFIG_READER.getBasicSalesTaxExcludedGoods(), goodCategory)) {
-	    	            	 //System.out.println("Good category not in exclusion list: apply Basic sales tax");
+	    	             if(! StringUtils.containsIgnoreCase(APPLICATION_CONFIG_READER.getBasicSalesTaxExcludedGoods(), goodCategory)) {	    	            	
 	    	                 basicSalesTax = taxCalculator.getBasicSalesTax(goodNetPrice);
+	    	                 //System.out.println("Good category not in exclusion list: apply Basic sales tax of: "+basicSalesTax);
 	            	     }  	             
 	    	             
 	    	             double totalAmountTax = importDutyTax + basicSalesTax;	    
-	    	             double priceWithTaxes = goodNetPrice + totalAmountTax;	  	
+	    	             double priceWithTaxes = goodNetPrice + totalAmountTax;	 	    	             
 	    	             
-	    	             PurchasedGood good = new PurchasedGood(purchasedGood, goodNetPrice, totalAmountTax, NumberFormatterUtils.formatDouble(2,priceWithTaxes));
+	    	             PurchasedGood good = new PurchasedGood(purchasedGood, goodNetPrice, totalAmountTax, priceWithTaxes);
 	    			     purchasedGoodsList.add(good);
 	    	             
 	    	         }catch (NumberFormatException e) {	
-	    	        	LOGGER.fatal("Error formatitng good price, cause ",e);
+	    	        	LOGGER.fatal("Error formatitng Good price, cause ",e);
 	    	        	System.out.print("Error, Good price is a number, insert again Good price > ");	    	           
 	 			     } 
 	    	         
@@ -113,16 +113,18 @@ public class SalesTaxesMain {
 		
 			double salesTaxesTotal = 0.0;
 			double purchaseTotal = 0.0;
+			
+			System.out.println("\n");
 					
 			for(PurchasedGood good: purchasedGoodsList) {
-				System.out.println(good.getGoodType()+": "+good.getPriceWithTaxes());
+				System.out.println(good.getGoodType()+": "+NumberFormatterUtils.formatDecimal(good.getPriceWithTaxes()));
 				
 				purchaseTotal += good.getPriceWithTaxes();
 				salesTaxesTotal += good.getGoodTotalTax();
 			}		
 			
-			System.out.println("Sales Taxes: "+NumberFormatterUtils.formatDouble(2, salesTaxesTotal));
-			System.out.println("Total: "+NumberFormatterUtils.formatDouble(2, purchaseTotal));
+			System.out.println("Sales Taxes: "+NumberFormatterUtils.formatDecimal(salesTaxesTotal));
+			System.out.println("Total: "+NumberFormatterUtils.formatDecimal(purchaseTotal));
 		}
 	}	
 	
@@ -138,5 +140,4 @@ public class SalesTaxesMain {
 	   	 System.out.print("3 : Print menu\n"); 
 	   	 System.out.print("-------------------------\n"); 
 	}
-
 }

@@ -23,23 +23,7 @@ public class TaxCalculator {
 	   }	
 	
 	
-	  /**
-		 * Return the good price WITH the "basic sales tax"
-		 * The returned value is rounded up to the nearest 0.05
-		 * 
-		 * @param goodPrice the price of the good
-		 * @return the good price WITH the "basic sales tax"
-	   */
-	   public double getPriceWithBasicSalesTax(double goodPrice) {
-		
-	    	double basicSalesTaxPercentage = APPLICATION_CONFIG_READER.getBasicSalesTaxPercentage();
-	    	
-	    	double priceWithTax = (goodPrice * basicSalesTaxPercentage)/100 + goodPrice;  
-	    	
-	    	BigDecimal bd = new BigDecimal(priceWithTax).setScale(2, RoundingMode.HALF_EVEN);
-	    	return bd.doubleValue();   		
-	   }   
- 
+
     
     
 	  /**
@@ -48,14 +32,14 @@ public class TaxCalculator {
 		* @param goodPrice the price of the good
 		* @return the good price WITH the "import duty tax"
 	  */
-	  public double getPriceWithImportDutyTax(double goodPrice) {
-	    	
-	    	double basicSalesTaxPercentage = APPLICATION_CONFIG_READER.getImportDutyTaxPercentage();	    	
-	    	double priceWithTax = (goodPrice * basicSalesTaxPercentage)/100 + goodPrice;  
-	    	
-	    	BigDecimal bd = new BigDecimal(priceWithTax).setScale(2, RoundingMode.HALF_EVEN);
-	    	return bd.doubleValue();   		
-	  } 
+//	  public double getPriceWithImportDutyTax(double goodPrice) {
+//	    	
+//	    	double basicSalesTaxPercentage = APPLICATION_CONFIG_READER.getImportDutyTaxPercentage();	    	
+//	    	double priceWithTax = (goodPrice * basicSalesTaxPercentage)/100 + goodPrice;  
+//	    	
+//	    	BigDecimal bd = new BigDecimal(priceWithTax).setScale(2, RoundingMode.HALF_EVEN);
+//	    	return bd.doubleValue();   		
+//	  } 
     
     
 	  /**
@@ -68,11 +52,7 @@ public class TaxCalculator {
 	  public double getBasicSalesTax(double goodPrice) {
 		
 	  	 double basicSalesTaxPercentage = APPLICATION_CONFIG_READER.getBasicSalesTaxPercentage(); 
-	  	 double basicSalesTax = (goodPrice * basicSalesTaxPercentage)/100.0;  
-	  	
-	     // System.out.println("basicSalesTax:"+basicSalesTax);
-	     // NumberFormatterUtils.roundDouble(basicSalesTax);
-	     // System.out.println("round basicSalesTax:"+basicSalesTax);
+	  	 double basicSalesTax = (goodPrice * basicSalesTaxPercentage)/100.0;    
 	    
 	  	 return NumberFormatterUtils.formatDouble(2,basicSalesTax);  
 	  }
@@ -87,8 +67,8 @@ public class TaxCalculator {
 	  public double getImportDutyTax(double goodPrice) {
 	 	
 	     double basicSalesTaxPercentage = APPLICATION_CONFIG_READER.getImportDutyTaxPercentage();
-	     double importDutyTax = (goodPrice * basicSalesTaxPercentage)/100.0;   
-	     	
+	     double importDutyTax = (goodPrice * basicSalesTaxPercentage)/100.0;  	     
+	   
 	     return NumberFormatterUtils.formatDouble(2,importDutyTax);      			
 	 } 
 
