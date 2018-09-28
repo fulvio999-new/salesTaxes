@@ -63,14 +63,12 @@ public class SalesTaxesMain {
 	    	             
 	    	             /* apply 'imported duty tax' if product is an imported one */
 	    	             if(StringUtils.containsIgnoreCase(purchasedGood, "imported")) {	    	            	
-	    	            	importDutyTax = taxCalculator.getImportDutyTax(goodNetPrice); 
-	    	            	//System.out.println("Imported product, apply duty tax of: "+importDutyTax);
+	    	            	importDutyTax = taxCalculator.getImportDutyTax(goodNetPrice); 	    	            	
 	    	             }
 	    	            
 	    	             /* if good category is NOT in the category whitelist apply basic sales tax   */
 	    	             if(! StringUtils.containsIgnoreCase(APPLICATION_CONFIG_READER.getBasicSalesTaxExcludedGoods(), goodCategory)) {	    	            	
-	    	                 basicSalesTax = taxCalculator.getBasicSalesTax(goodNetPrice);
-	    	                 //System.out.println("Good category not in exclusion list: apply Basic sales tax of: "+basicSalesTax);
+	    	                 basicSalesTax = taxCalculator.getBasicSalesTax(goodNetPrice);	    	                
 	            	     }  	             
 	    	             
 	    	             double totalAmountTax = importDutyTax + basicSalesTax;	    
