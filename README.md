@@ -25,10 +25,12 @@ note: on *nix systems can be necessary add the execution permission with :
 chmod +x salesTaxes-<version>-bin.jar 
 
 
-* Logging *
+* Logging 
 In the same folder of the jar file is created the application log file
 
 
-* NOTES *
+* NOTES 
 - Instead of create two list with medical and food goods, is requested at the user to provide the 'category' of the purchased good (book, food, medical, other).
 This solution is adopted to have more flexible solution to decide when apply the 'basic sales tax'.
+
+* Tested with sample input
