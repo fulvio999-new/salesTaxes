@@ -43,6 +43,6 @@ instead of create two fixed list with medical and food goods, is requested at th
 
 * Tested with sample input
 
-* Issues
+* Issues/improvements
 
-See Issues section.
+ See Issues section.
