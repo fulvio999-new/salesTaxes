@@ -7,6 +7,7 @@ The configuration parameters are in appConfiguration.properties file under the s
 Note: the application is already configured with default parameters.
 
 * How to build the application
+
 The building is done with Maven
 Application can be packaged as single jar (without dependency) or as standalone jar (jar + dependency):
 
@@ -19,6 +20,7 @@ mvn assembly:assembly
 To build with Travis: https://travis-ci.org/fulvio999/salesTaxes
 
 * How to run the appplication
+
 The application can be execute using two methods (depends on if you have the source or the jar)
 
 a) From your IDE (eg. Eclipse) run SalesTaxesMain.java class
@@ -31,14 +33,16 @@ note: on *nix systems can be necessary add the execution permission with :
 chmod +x salesTaxes-<version>-bin.jar 
 
 * Logging 
+
 In the same folder of the jar file is created the application log file
 
-
 * NOTES:
+
 Due to the fact that is necessary discern between medical and food goods;
 instead of create two fixed list with medical and food goods, is requested at the user to provide the 'category' of the purchased good (book,food,medical,other).This solution is adopted to have more flexible solution working with different input.
 
 * Tested with sample input
 
 * Issues
+
 See Issues section.
